@@ -59,7 +59,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     'Skip',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
-                      color: Colors.black54,
+                      color: Colors.grey,
                     ),
                   ),
                 ),
@@ -156,7 +156,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
             style: GoogleFonts.poppins(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color:
+                  Theme.of(context).textTheme.titleLarge?.color ??
+                  Colors.black87,
             ),
           ),
           const SizedBox(height: 20),
@@ -165,7 +167,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontSize: 16,
-              color: Colors.black54,
+              color: Colors.grey,
               height: 1.5,
             ),
           ),
@@ -181,7 +183,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
       width: _currentPage == index ? 24 : 8,
       height: 8,
       decoration: BoxDecoration(
-        color: _currentPage == index ? const Color(0xFFF39E75) : Colors.black26,
+        color: _currentPage == index
+            ? const Color(0xFFF39E75)
+            : (Theme.of(context).brightness == Brightness.dark
+                  ? Colors.grey.shade700
+                  : Colors.black26),
         borderRadius: BorderRadius.circular(4),
       ),
     );

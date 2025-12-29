@@ -88,7 +88,9 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                 style: GoogleFonts.poppins(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color:
+                      Theme.of(context).textTheme.titleLarge?.color ??
+                      Colors.black87,
                 ),
               ),
 
@@ -96,7 +98,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
 
               Text(
                 'Let\'s personalize your wellness journey',
-                style: GoogleFonts.poppins(fontSize: 16, color: Colors.black54),
+                style: GoogleFonts.poppins(fontSize: 16, color: Colors.grey),
               ),
 
               const SizedBox(height: 50),
@@ -112,7 +114,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                         height: 120,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.white,
+                          color: Theme.of(context).cardColor,
                           border: Border.all(
                             color: const Color(0xFFF39E75),
                             width: 3,
@@ -171,10 +173,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
               Center(
                 child: Text(
                   'Tap to add your photo',
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    color: Colors.black54,
-                  ),
+                  style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
                 ),
               ),
 
@@ -186,7 +185,9 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black87,
+                  color:
+                      Theme.of(context).textTheme.bodyLarge?.color ??
+                      Colors.black87,
                 ),
               ),
 
@@ -196,9 +197,9 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                 controller: _nameController,
                 decoration: InputDecoration(
                   hintText: 'Enter your name',
-                  hintStyle: GoogleFonts.poppins(color: Colors.black38),
+                  hintStyle: GoogleFonts.poppins(color: Colors.grey),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Theme.of(context).cardColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
@@ -208,7 +209,10 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                     vertical: 16,
                   ),
                 ),
-                style: GoogleFonts.poppins(fontSize: 16),
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                ),
               ),
 
               const SizedBox(height: 40),
@@ -219,7 +223,9 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black87,
+                  color:
+                      Theme.of(context).textTheme.bodyLarge?.color ??
+                      Colors.black87,
                 ),
               ),
 
@@ -248,7 +254,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                       decoration: BoxDecoration(
                         color: isSelected
                             ? const Color(0xFFF39E75)
-                            : Colors.white,
+                            : Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: isSelected
@@ -261,7 +267,10 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: isSelected ? Colors.white : Colors.black87,
+                          color: isSelected
+                              ? Colors.white
+                              : (Theme.of(context).textTheme.bodyLarge?.color ??
+                                    Colors.black87),
                         ),
                       ),
                     ),
