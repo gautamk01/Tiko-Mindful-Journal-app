@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tracking_app/services/database_service.dart';
 import 'package:tracking_app/services/export_import_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -229,6 +230,50 @@ class _SettingsPageState extends State<SettingsPage> {
 
               const SizedBox(height: 24),
 
+              const SizedBox(height: 24),
+
+              // Creator section
+              _buildSection(
+                title: 'Creator',
+                child: Column(
+                  children: [
+                    _buildListTile(
+                      icon: Icons.code,
+                      title: 'Developed by',
+                      subtitle: 'Gautam Krishna M',
+                      onTap: null,
+                    ),
+                    const Divider(height: 1),
+                    _buildListTile(
+                      icon: Icons.email_outlined,
+                      title: 'Email',
+                      subtitle: 'gautamkrishna.mooppil.dev@gmail.com',
+                      onTap: () => _launchUrl(
+                        'mailto:gautamkrishna.mooppil.dev@gmail.com',
+                      ),
+                    ),
+                    const Divider(height: 1),
+                    _buildListTile(
+                      icon: Icons.link,
+                      title: 'GitHub',
+                      subtitle: 'github.com/gautamk01',
+                      onTap: () => _launchUrl('https://github.com/gautamk01'),
+                    ),
+                    const Divider(height: 1),
+                    _buildListTile(
+                      icon: Icons.work_outline,
+                      title: 'LinkedIn',
+                      subtitle: 'linkedin.com/in/gautam-krishna-dev',
+                      onTap: () => _launchUrl(
+                        'https://linkedin.com/in/gautam-krishna-dev',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
               // App Info section
               _buildSection(
                 title: 'About',
@@ -356,5 +401,19 @@ class _SettingsPageState extends State<SettingsPage> {
         );
       },
     );
+  }
+
+  Future<void> _launchUrl(String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    try {
+      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+        throw Exception('Could not launch $url');
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Could not open link: $e')));
+    }
   }
 }
