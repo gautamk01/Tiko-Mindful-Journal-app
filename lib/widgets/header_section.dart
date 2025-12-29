@@ -61,7 +61,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                     'Have a good day! 👋',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
-                      color: Colors.black54,
+                      color: Colors.grey,
                     ),
                   ),
                   Text(
@@ -69,7 +69,9 @@ class _HeaderSectionState extends State<HeaderSection> {
                     style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black,
+                      color:
+                          Theme.of(context).textTheme.bodyLarge?.color ??
+                          Colors.black,
                     ),
                   ),
                 ],
@@ -79,7 +81,7 @@ class _HeaderSectionState extends State<HeaderSection> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(15),
               boxShadow: [
                 BoxShadow(
@@ -89,9 +91,9 @@ class _HeaderSectionState extends State<HeaderSection> {
                 ),
               ],
             ),
-            child: const Icon(
+            child: Icon(
               Icons.notifications_outlined,
-              color: Colors.black,
+              color: Theme.of(context).iconTheme.color ?? Colors.black,
             ),
           ),
         ],

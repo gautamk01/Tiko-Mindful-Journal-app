@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tracking_app/models/daily_metrics.dart';
 import 'package:tracking_app/models/journal_entry.dart';
@@ -58,6 +59,19 @@ class DatabaseService {
 
   bool isFirstLaunch() {
     return _userBox.get('isFirstLaunch', defaultValue: true);
+  }
+
+  // Theme Methods
+  Future<void> saveThemeMode(String mode) async {
+    await _userBox.put('themeMode', mode);
+  }
+
+  String getThemeMode() {
+    return _userBox.get('themeMode', defaultValue: 'system');
+  }
+
+  ValueListenable<Box> getUserDataListenable() {
+    return _userBox.listenable();
   }
 
   // Journal Methods

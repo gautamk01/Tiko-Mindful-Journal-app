@@ -13,7 +13,7 @@ class MoodSelectorDialog extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: const Color(0xFFF6F6F4),
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(24),
         ),
         child: Column(
@@ -24,7 +24,9 @@ class MoodSelectorDialog extends StatelessWidget {
               style: GoogleFonts.playfairDisplay(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color:
+                    Theme.of(context).textTheme.titleLarge?.color ??
+                    Colors.black,
               ),
             ),
             const SizedBox(height: 8),
@@ -60,7 +62,7 @@ class MoodSelectorDialog extends StatelessWidget {
     int value,
   ) {
     return Material(
-      color: Colors.white,
+      color: Theme.of(context).cardColor,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: () async {

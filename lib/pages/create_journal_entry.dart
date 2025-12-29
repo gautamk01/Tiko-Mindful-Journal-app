@@ -227,12 +227,12 @@ class _CreateJournalEntryPageState extends State<CreateJournalEntryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.black),
+          icon: Icon(Icons.close, color: Theme.of(context).iconTheme.color),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
@@ -259,7 +259,9 @@ class _CreateJournalEntryPageState extends State<CreateJournalEntryPage> {
               style: GoogleFonts.poppins(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: Colors.black,
+                color:
+                    Theme.of(context).textTheme.bodyLarge?.color ??
+                    Colors.black,
               ),
             ),
             const SizedBox(height: 16),
@@ -322,7 +324,7 @@ class _CreateJournalEntryPageState extends State<CreateJournalEntryPage> {
                 hintText: 'Entry Title',
                 border: InputBorder.none,
                 hintStyle: GoogleFonts.playfairDisplay(
-                  color: Colors.black38,
+                  color: Colors.grey,
                   fontSize: 24,
                 ),
               ),
@@ -364,7 +366,7 @@ class _CreateJournalEntryPageState extends State<CreateJournalEntryPage> {
               decoration: InputDecoration(
                 hintText: 'Start writing...',
                 border: InputBorder.none,
-                hintStyle: GoogleFonts.poppins(color: Colors.black38),
+                hintStyle: GoogleFonts.poppins(color: Colors.grey),
               ),
             ),
 
@@ -377,7 +379,9 @@ class _CreateJournalEntryPageState extends State<CreateJournalEntryPage> {
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black87,
+                  color:
+                      Theme.of(context).textTheme.bodyLarge?.color ??
+                      Colors.black87,
                 ),
               ),
               const SizedBox(height: 12),

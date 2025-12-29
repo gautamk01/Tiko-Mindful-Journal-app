@@ -5,12 +5,14 @@ import 'package:tracking_app/pages/mood_chart_page.dart';
 import 'package:tracking_app/pages/settings_page.dart';
 import 'package:tracking_app/pages/splash_screen.dart';
 import 'package:tracking_app/widgets/custom_bottom_nav.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:tracking_app/services/database_service.dart';
 import 'package:tracking_app/services/notification_service.dart';
 
 // Global navigator key for showing dialogs from anywhere
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Set edge-to-edge mode (blends status bar)
@@ -25,6 +27,9 @@ void main() {
     ),
   );
 
+  // Initialize Database BEFORE app runs to avoid LateInitializationError
+  await DatabaseService().init();
+
   // Initialize notification service in background after app starts
   Future.delayed(const Duration(milliseconds: 100), () {
     NotificationService().initialize();
@@ -38,17 +43,70 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      title: 'Wellness Tracker',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFFBE4D8)),
-        useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFFAF3F0),
-      ),
-      home: const SplashScreen(),
+    return ValueListenableBuilder<Box>(
+      valueListenable: DatabaseService().getUserDataListenable(),
+      builder: (context, box, child) {
+        final modeString =
+            box.get('themeMode', defaultValue: 'system') as String;
+        final mode = _getThemeMode(modeString);
+
+        return MaterialApp(
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          title: 'Tiko',
+          themeMode: mode,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color(0xFFFBE4D8),
+            ),
+            useMaterial3: true,
+            scaffoldBackgroundColor: const Color(0xFFFAF3F0),
+            // Light theme overrides
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Color(0xFFFAF3F0),
+              elevation: 0,
+              iconTheme: IconThemeData(color: Colors.black87),
+              systemOverlayStyle: SystemUiOverlayStyle.dark, // Black icons
+            ),
+          ),
+          darkTheme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color(0xFFFBE4D8),
+              brightness: Brightness.dark,
+            ),
+            useMaterial3: true,
+            scaffoldBackgroundColor: Colors.black, // AMOLED Black
+            cardColor: const Color(0xFF1C1C1E),
+            dividerColor: Colors.grey[800],
+            // Dark theme overrides
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.black,
+              elevation: 0,
+              iconTheme: IconThemeData(color: Colors.white),
+              systemOverlayStyle: SystemUiOverlayStyle.light, // White icons
+            ),
+            bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+              backgroundColor: Colors.black,
+              selectedItemColor: Color(0xFFF39E75),
+              unselectedItemColor: Colors.grey,
+            ),
+          ),
+          home: const SplashScreen(),
+        );
+      },
     );
+  }
+
+  ThemeMode _getThemeMode(String mode) {
+    switch (mode) {
+      case 'light':
+        return ThemeMode.light;
+      case 'dark':
+        return ThemeMode.dark;
+      case 'system':
+      default:
+        return ThemeMode.system;
+    }
   }
 }
 

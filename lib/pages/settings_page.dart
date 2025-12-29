@@ -129,7 +129,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F4),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -143,7 +143,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 style: GoogleFonts.poppins(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color:
+                      Theme.of(context).textTheme.titleLarge?.color ??
+                      Colors.black,
                 ),
               ),
 
@@ -232,6 +234,23 @@ class _SettingsPageState extends State<SettingsPage> {
 
               const SizedBox(height: 24),
 
+              // Appearance section
+              _buildSection(
+                title: 'Appearance',
+                child: Column(
+                  children: [
+                    _buildListTile(
+                      icon: Icons.dark_mode_outlined,
+                      title: 'Theme',
+                      subtitle: _getThemeText(_db.getThemeMode()),
+                      onTap: _showThemeSelector,
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
               // Creator section
               _buildSection(
                 title: 'Creator',
@@ -312,14 +331,18 @@ class _SettingsPageState extends State<SettingsPage> {
             style: GoogleFonts.poppins(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: Colors.black54,
+              color:
+                  Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.color?.withOpacity(0.6) ??
+                  Colors.grey,
               letterSpacing: 0.5,
             ),
           ),
         ),
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
@@ -355,12 +378,17 @@ class _SettingsPageState extends State<SettingsPage> {
         style: GoogleFonts.poppins(
           fontSize: 16,
           fontWeight: FontWeight.w600,
-          color: Colors.black87,
+          color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black87,
         ),
       ),
       subtitle: Text(
         subtitle,
-        style: GoogleFonts.poppins(fontSize: 13, color: Colors.black54),
+        style: GoogleFonts.poppins(
+          fontSize: 13,
+          color:
+              Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7) ??
+              Colors.grey,
+        ),
       ),
       trailing: onTap != null
           ? const Icon(Icons.chevron_right, color: Colors.black26)
@@ -399,6 +427,55 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ],
         );
+      },
+    );
+  }
+
+  String _getThemeText(String mode) {
+    switch (mode) {
+      case 'light':
+        return 'Light Mode';
+      case 'dark':
+        return 'AMOLED Dark';
+      case 'system':
+      default:
+        return 'System Default';
+    }
+  }
+
+  void _showThemeSelector() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Select Theme', style: GoogleFonts.poppins()),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildThemeOption('System Default', 'system'),
+              _buildThemeOption('Light Mode', 'light'),
+              _buildThemeOption('AMOLED Dark', 'dark'),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildThemeOption(String title, String value) {
+    final currentTheme = _db.getThemeMode();
+    return RadioListTile<String>(
+      title: Text(title, style: GoogleFonts.poppins()),
+      value: value,
+      groupValue: currentTheme,
+      activeColor: const Color(0xFFF39E75),
+      onChanged: (val) async {
+        if (val != null) {
+          await _db.saveThemeMode(val);
+          if (!mounted) return;
+          Navigator.pop(context);
+          setState(() {}); // Rebuild to update subtitle
+        }
       },
     );
   }

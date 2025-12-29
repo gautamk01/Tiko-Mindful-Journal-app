@@ -74,7 +74,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F4),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -171,7 +171,10 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
               Center(
                 child: Text(
                   'Tap to add your photo',
-                  style: GoogleFonts.poppins(fontSize: 14, color: Colors.black54),
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: Colors.black54,
+                  ),
                 ),
               ),
 

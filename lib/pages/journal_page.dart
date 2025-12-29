@@ -38,7 +38,7 @@ class _JournalPageState extends State<JournalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F4),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.only(bottom: 100), // Space for bottom nav
@@ -63,7 +63,9 @@ class _JournalPageState extends State<JournalPage> {
                   style: GoogleFonts.poppins(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color:
+                        Theme.of(context).textTheme.titleLarge?.color ??
+                        Colors.black,
                   ),
                 ),
               ),
@@ -87,7 +89,7 @@ class _JournalPageState extends State<JournalPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Text(
                         'No entries yet for today.',
-                        style: GoogleFonts.poppins(color: Colors.black45),
+                        style: GoogleFonts.poppins(color: Colors.grey),
                       ),
                     );
                   }
@@ -139,7 +141,7 @@ class _JournalPageState extends State<JournalPage> {
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Theme.of(context).cardColor,
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
@@ -161,7 +163,7 @@ class _JournalPageState extends State<JournalPage> {
                                       style: GoogleFonts.poppins(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w600,
-                                        color: Colors.black45,
+                                        color: Colors.grey,
                                       ),
                                     ),
                                     Container(
@@ -196,7 +198,9 @@ class _JournalPageState extends State<JournalPage> {
                                   style: GoogleFonts.playfairDisplay(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                    color: Theme.of(
+                                      context,
+                                    ).textTheme.bodyLarge?.color,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -206,7 +210,11 @@ class _JournalPageState extends State<JournalPage> {
                                   overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.poppins(
                                     fontSize: 14,
-                                    color: Colors.black54,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.color
+                                        ?.withOpacity(0.7),
                                     height: 1.4,
                                   ),
                                 ),
@@ -264,7 +272,7 @@ class _JournalPageState extends State<JournalPage> {
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
@@ -293,7 +301,7 @@ class _JournalPageState extends State<JournalPage> {
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black54,
+                    color: Colors.grey,
                   ),
                 ),
               ],
@@ -305,7 +313,7 @@ class _JournalPageState extends State<JournalPage> {
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 height: 1.3,
-                color: Colors.black,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
               ),
             ),
             const SizedBox(height: 24),
@@ -369,7 +377,9 @@ class _JournalPageState extends State<JournalPage> {
                 fontWeight: FontWeight.bold,
                 height: 1.1,
                 letterSpacing: -0.5,
-                color: Colors.black,
+                color:
+                    Theme.of(context).textTheme.displayLarge?.color ??
+                    Colors.black,
               ),
             ),
           ),

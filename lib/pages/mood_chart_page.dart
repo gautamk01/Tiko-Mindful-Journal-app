@@ -58,7 +58,7 @@ class _MoodChartPageState extends State<MoodChartPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F4),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -67,7 +67,8 @@ class _MoodChartPageState extends State<MoodChartPage>
           style: GoogleFonts.playfairDisplay(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color:
+                Theme.of(context).textTheme.titleLarge?.color ?? Colors.black,
           ),
         ),
         actions: [
@@ -140,7 +141,7 @@ class _MoodChartPageState extends State<MoodChartPage>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -180,7 +181,9 @@ class _MoodChartPageState extends State<MoodChartPage>
           IconButton(
             icon: Icon(
               Icons.chevron_right,
-              color: isToday ? Colors.grey.shade300 : Colors.black,
+              color: isToday
+                  ? Colors.grey.shade300
+                  : Theme.of(context).iconTheme.color ?? Colors.black,
             ),
             onPressed: isToday ? null : () => _changeDate(1),
           ),
@@ -200,7 +203,7 @@ class _MoodChartPageState extends State<MoodChartPage>
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -248,8 +251,12 @@ class _MoodChartPageState extends State<MoodChartPage>
                         final isFullHour = value % 1 == 0;
                         return FlLine(
                           color: isFullHour
-                              ? Colors.grey.shade200
-                              : Colors.grey.shade50,
+                              ? (Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.grey.shade800
+                                    : Colors.grey.shade200)
+                              : (Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.grey.shade900
+                                    : Colors.grey.shade50),
                           strokeWidth: isFullHour ? 1.0 : 0.5,
                         );
                       },
@@ -294,7 +301,7 @@ class _MoodChartPageState extends State<MoodChartPage>
                                   style: GoogleFonts.dmSans(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.black54,
+                                    color: Colors.grey,
                                   ),
                                 ),
                               );
@@ -445,7 +452,7 @@ class _MoodChartPageState extends State<MoodChartPage>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -463,7 +470,9 @@ class _MoodChartPageState extends State<MoodChartPage>
             style: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: Colors.black87,
+              color:
+                  Theme.of(context).textTheme.bodyLarge?.color ??
+                  Colors.black87,
             ),
           ),
           Text(emoji, style: const TextStyle(fontSize: 24)),
@@ -513,7 +522,7 @@ class _MoodChartPageState extends State<MoodChartPage>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(

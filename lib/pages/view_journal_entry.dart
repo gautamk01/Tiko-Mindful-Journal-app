@@ -12,12 +12,15 @@ class ViewJournalEntryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F4),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).iconTheme.color,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
@@ -52,7 +55,7 @@ class ViewJournalEntryPage extends StatelessWidget {
               _formatDate(entry.date),
               style: GoogleFonts.poppins(
                 fontSize: 14,
-                color: Colors.black54,
+                color: Colors.grey,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -64,7 +67,9 @@ class ViewJournalEntryPage extends StatelessWidget {
               style: GoogleFonts.playfairDisplay(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color:
+                    Theme.of(context).textTheme.titleLarge?.color ??
+                    Colors.black,
                 height: 1.2,
               ),
             ),
@@ -89,7 +94,9 @@ class ViewJournalEntryPage extends StatelessWidget {
                       Icon(
                         _getMoodIcon(entry.mood),
                         size: 16,
-                        color: Colors.black87,
+                        color:
+                            Theme.of(context).textTheme.bodyLarge?.color ??
+                            Colors.black87,
                       ),
                       const SizedBox(width: 6),
                       Text(
@@ -97,7 +104,9 @@ class ViewJournalEntryPage extends StatelessWidget {
                         style: GoogleFonts.poppins(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                          color:
+                              Theme.of(context).textTheme.bodyLarge?.color ??
+                              Colors.black87,
                         ),
                       ),
                     ],
@@ -122,7 +131,7 @@ class ViewJournalEntryPage extends StatelessWidget {
                       tag,
                       style: GoogleFonts.poppins(
                         fontSize: 12,
-                        color: Colors.black54,
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -185,7 +194,7 @@ class ViewJournalEntryPage extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   height: 1.6,
-                  color: Colors.black87,
+                  color: Colors.grey.shade700,
                 ),
               ),
             );
@@ -224,7 +233,7 @@ class ViewJournalEntryPage extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 16,
                 height: 1.6,
-                color: Colors.black87,
+                color: Colors.grey.shade700,
               ),
             ),
           );

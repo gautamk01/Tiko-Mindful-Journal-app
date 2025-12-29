@@ -22,7 +22,7 @@ class StatsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -52,7 +52,9 @@ class StatsCard extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    color:
+                        Theme.of(context).textTheme.bodyLarge?.color ??
+                        Colors.black,
                   ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
@@ -66,7 +68,8 @@ class StatsCard extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 22,
               fontWeight: FontWeight.w600,
-              color: Colors.black,
+              color:
+                  Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black,
             ),
           ),
         ],

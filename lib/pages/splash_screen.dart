@@ -48,9 +48,9 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _initializeAndNavigate() async {
-    // Initialize database
+    // Database is already initialized in main.dart
     final db = DatabaseService();
-    await db.init();
+    // await db.init(); // Removed double init
 
     // Wait for animation + a little extra time for the user to see it
     await Future.delayed(const Duration(seconds: 3));
