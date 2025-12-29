@@ -51,7 +51,9 @@ class _DateStripState extends State<DateStrip> {
                 style: GoogleFonts.poppins(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black,
+                  color:
+                      Theme.of(context).textTheme.titleLarge?.color ??
+                      Colors.black,
                 ),
               ),
               GestureDetector(
@@ -64,10 +66,22 @@ class _DateStripState extends State<DateStrip> {
                     builder: (context, child) {
                       return Theme(
                         data: Theme.of(context).copyWith(
-                          colorScheme: const ColorScheme.light(
-                            primary: Color(0xFFF39E75),
+                          colorScheme: ColorScheme(
+                            primary: const Color(0xFFF39E75),
                             onPrimary: Colors.white,
-                            onSurface: Colors.black,
+                            onSurface:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
+                            brightness: Theme.of(context).brightness,
+                            secondary: const Color(0xFFF39E75),
+                            onSecondary: Colors.white,
+                            error: Colors.red,
+                            onError: Colors.white,
+                            surface:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? Colors.grey.shade900
+                                : Colors.white,
                           ),
                         ),
                         child: child!,
@@ -118,7 +132,11 @@ class _DateStripState extends State<DateStrip> {
                 child: Container(
                   width: 65,
                   decoration: BoxDecoration(
-                    color: isSelected ? const Color(0xFFF39E75) : Colors.white,
+                    color: isSelected
+                        ? const Color(0xFFF39E75)
+                        : (Theme.of(context).brightness == Brightness.dark
+                              ? Theme.of(context).cardColor
+                              : Colors.white),
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: isSelected
                         ? [
@@ -133,7 +151,12 @@ class _DateStripState extends State<DateStrip> {
                         ? Border.all(color: const Color(0xFFF39E75), width: 2.5)
                         : isSelected
                         ? null
-                        : Border.all(color: Colors.grey.shade200),
+                        : Border.all(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? Colors.grey.shade800
+                                : Colors.grey.shade200,
+                          ),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -143,7 +166,11 @@ class _DateStripState extends State<DateStrip> {
                         style: GoogleFonts.poppins(
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
-                          color: isSelected ? Colors.white : Colors.black45,
+                          color: isSelected
+                              ? Colors.white
+                              : (Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.grey
+                                    : Colors.black45),
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -152,7 +179,10 @@ class _DateStripState extends State<DateStrip> {
                         style: GoogleFonts.poppins(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: isSelected ? Colors.white : Colors.black87,
+                          color: isSelected
+                              ? Colors.white
+                              : (Theme.of(context).textTheme.bodyLarge?.color ??
+                                    Colors.black87),
                         ),
                       ),
                     ],

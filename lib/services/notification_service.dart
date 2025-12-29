@@ -52,7 +52,12 @@ class NotificationService {
         >();
 
     if (android != null) {
-      await android.requestNotificationsPermission();
+      // Check if permission is already granted
+      final granted = await android.areNotificationsEnabled();
+      if (granted == null || !granted) {
+        // Only request if not already granted
+        await android.requestNotificationsPermission();
+      }
     }
   }
 

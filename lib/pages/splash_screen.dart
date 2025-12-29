@@ -52,8 +52,8 @@ class _SplashScreenState extends State<SplashScreen>
     final db = DatabaseService();
     // await db.init(); // Removed double init
 
-    // Wait for animation + a little extra time for the user to see it
-    await Future.delayed(const Duration(seconds: 3));
+    // Wait for animation (reduced for faster load time)
+    await Future.delayed(const Duration(milliseconds: 1200));
 
     if (!mounted) return;
 

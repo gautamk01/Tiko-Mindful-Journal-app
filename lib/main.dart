@@ -91,10 +91,22 @@ class MyApp extends StatelessWidget {
               unselectedItemColor: Colors.grey,
             ),
           ),
-          home: const SplashScreen(),
+          home: _getInitialScreen(),
         );
       },
     );
+  }
+
+  Widget _getInitialScreen() {
+    final db = DatabaseService();
+    final isFirstLaunch = db.isFirstLaunch();
+
+    // Show splash only on first launch, otherwise go directly to main screen
+    if (isFirstLaunch) {
+      return const SplashScreen();
+    } else {
+      return const MainScaffold();
+    }
   }
 
   ThemeMode _getThemeMode(String mode) {
