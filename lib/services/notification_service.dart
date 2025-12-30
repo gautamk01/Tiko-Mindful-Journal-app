@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -62,7 +63,7 @@ class NotificationService {
   }
 
   void _onNotificationResponse(NotificationResponse response) async {
-    print('Notification tapped - payload: ${response.payload}');
+    debugPrint('Notification tapped - payload: ${response.payload}');
     // Dialog will be shown by main.dart navigation handling
   }
 
@@ -83,7 +84,7 @@ class NotificationService {
         final moodValue = result['moodValue'] as int;
         final timestamp = result['timestamp'] as int;
 
-        print('Received pending mood from notification: $moodValue');
+        debugPrint('Received pending mood from notification: $moodValue');
 
         // Save the mood
         final mood = HourlyMood(
@@ -93,7 +94,7 @@ class NotificationService {
         );
 
         await _db.saveHourlyMood(mood);
-        print('Mood saved from notification: $moodValue');
+        debugPrint('Mood saved from notification: $moodValue');
       }
     } catch (e) {
       // Silently handle errors (might happen if app is not fully initialized)
@@ -108,9 +109,9 @@ class NotificationService {
     // This will be handled by the platform-specific code
     try {
       await platform.invokeMethod('sendCustomMoodNotification');
-      print('Custom mood notification sent!');
+      debugPrint('Custom mood notification sent!');
     } catch (e) {
-      print('Error sending custom notification: $e');
+      debugPrint('Error sending custom notification: $e');
       // Fallback to regular notification
       await _sendFallbackNotification();
     }

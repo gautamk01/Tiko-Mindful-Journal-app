@@ -21,7 +21,7 @@ class _SettingsPageState extends State<SettingsPage> {
   String _userName = '';
   String? _profileImagePath;
 
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   void initState() {
@@ -334,7 +334,7 @@ class _SettingsPageState extends State<SettingsPage> {
               color:
                   Theme.of(
                     context,
-                  ).textTheme.bodyMedium?.color?.withOpacity(0.6) ??
+                  ).textTheme.bodyMedium?.color?.withValues(alpha: 0.6) ??
                   Colors.grey,
               letterSpacing: 0.5,
             ),
@@ -346,7 +346,7 @@ class _SettingsPageState extends State<SettingsPage> {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.03),
+                color: Colors.black.withValues(alpha: 0.03),
                 blurRadius: 10,
                 offset: const Offset(0, 2),
               ),
@@ -368,7 +368,7 @@ class _SettingsPageState extends State<SettingsPage> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: const Color(0xFFF39E75).withOpacity(0.1),
+          color: const Color(0xFFF39E75).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Icon(icon, color: const Color(0xFFF39E75), size: 20),
@@ -386,7 +386,9 @@ class _SettingsPageState extends State<SettingsPage> {
         style: GoogleFonts.poppins(
           fontSize: 13,
           color:
-              Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7) ??
+              Theme.of(
+                context,
+              ).textTheme.bodyMedium?.color?.withValues(alpha: 0.7) ??
               Colors.grey,
         ),
       ),
@@ -416,11 +418,16 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             TextButton(
               onPressed: () async {
+                // Capture navigator before async gap
+                final navigator = Navigator.of(context);
+
                 if (controller.text.trim().isNotEmpty) {
                   await _db.saveUserName(controller.text.trim());
                   _loadUserData();
                   if (!mounted) return;
-                  Navigator.pop(context);
+
+                  // Use captured navigator
+                  navigator.pop();
                 }
               },
               child: const Text('Save'),

@@ -144,7 +144,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             width: 120,
             height: 120,
             decoration: BoxDecoration(
-              color: slide.color.withOpacity(0.2),
+              color: slide.color.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
             child: Icon(slide.icon, size: 60, color: slide.color),

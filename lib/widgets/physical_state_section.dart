@@ -69,7 +69,9 @@ class PhysicalStateSection extends StatelessWidget {
                           startDegreeOffset: -90,
                           sections: [
                             PieChartSectionData(
-                              color: const Color(0xFFE4B7E5).withOpacity(0.5),
+                              color: const Color(
+                                0xFFE4B7E5,
+                              ).withValues(alpha: 0.5),
                               value: 40,
                               radius: 35,
                               showTitle: false,

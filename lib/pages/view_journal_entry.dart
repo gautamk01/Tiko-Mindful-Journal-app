@@ -291,7 +291,7 @@ class ViewJournalEntryPage extends StatelessWidget {
   }
 
   void _viewFullImage(int index) {
-    // TODO: Implement full-screen image viewer
+    // Full-screen image viewer - to be implemented
   }
 
   String _formatDate(DateTime date) {

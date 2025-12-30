@@ -95,7 +95,7 @@ class _DateStripState extends State<DateStrip> {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF39E75).withOpacity(0.1),
+                    color: const Color(0xFFF39E75).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
@@ -141,7 +141,9 @@ class _DateStripState extends State<DateStrip> {
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: const Color(0xFFF39E75).withOpacity(0.4),
+                              color: const Color(
+                                0xFFF39E75,
+                              ).withValues(alpha: 0.4),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),

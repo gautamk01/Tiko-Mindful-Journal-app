@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:tracking_app/models/daily_metrics.dart';
@@ -37,10 +38,10 @@ class ExportImportService {
         final entryJson = entry.toJson();
 
         // Convert absolute paths to relative
-        entryJson['imagePaths'] = (entry.imagePaths as List<String>)
+        entryJson['imagePaths'] = entry.imagePaths
             .map((p) => _getRelativePath(p, mediaDir.path))
             .toList();
-        entryJson['audioPaths'] = (entry.audioPaths as List<String>)
+        entryJson['audioPaths'] = entry.audioPaths
             .map((p) => _getRelativePath(p, mediaDir.path))
             .toList();
 
@@ -107,7 +108,7 @@ class ExportImportService {
 
       return 'Backup saved to Downloads/$fileName';
     } catch (e) {
-      print('Export error: $e');
+      debugPrint('Export error: $e');
       return 'Export failed: $e';
     }
   }
@@ -285,7 +286,7 @@ class ExportImportService {
 
       return 'Import successful!\nImported:\n• $importedEntries journal entries\n• $importedMetrics daily records\n• Media files restored';
     } catch (e) {
-      print('Import error: $e');
+      debugPrint('Import error: $e');
       return 'Import failed: $e';
     }
   }
