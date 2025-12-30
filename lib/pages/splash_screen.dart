@@ -63,8 +63,9 @@ class _SplashScreenState extends State<SplashScreen>
     if (isFirstLaunch) {
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
-          pageBuilder: (_, __, ___) => const OnboardingPage(),
-          transitionsBuilder: (_, animation, __, child) {
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const OnboardingPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },
           transitionDuration: const Duration(milliseconds: 800),
@@ -73,8 +74,9 @@ class _SplashScreenState extends State<SplashScreen>
     } else {
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
-          pageBuilder: (_, __, ___) => const MainScaffold(),
-          transitionsBuilder: (_, animation, __, child) {
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const MainScaffold(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },
           transitionDuration: const Duration(milliseconds: 800),
@@ -109,7 +111,7 @@ class _SplashScreenState extends State<SplashScreen>
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFF39E75).withOpacity(0.2),
+                        color: const Color(0xFFF39E75).withValues(alpha: 0.2),
                         blurRadius: 30,
                         offset: const Offset(0, 15),
                       ),
