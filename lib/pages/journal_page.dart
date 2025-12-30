@@ -99,7 +99,8 @@ class _JournalPageState extends State<JournalPage> {
                     physics: const NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     itemCount: entries.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 12),
                     itemBuilder: (context, index) {
                       final entry = entries[index];
 
@@ -169,11 +170,16 @@ class _JournalPageState extends State<JournalPage> {
                             );
                           },
                           onDismissed: (direction) async {
+                            // Capture context before async gap
+                            final scaffoldMessenger = ScaffoldMessenger.of(
+                              context,
+                            );
+
                             await _db.deleteJournalEntry(entry.id);
                             if (!mounted) return;
 
-                            // Safe to use context here after mounted check
-                            ScaffoldMessenger.of(context).showSnackBar(
+                            // Use captured messenger
+                            scaffoldMessenger.showSnackBar(
                               const SnackBar(
                                 content: Text('Entry deleted'),
                                 duration: Duration(seconds: 2),
@@ -202,7 +208,7 @@ class _JournalPageState extends State<JournalPage> {
                                 borderRadius: BorderRadius.circular(20),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.05),
+                                    color: Colors.black.withValues(alpha: 0.05),
                                     blurRadius: 10,
                                     offset: const Offset(0, 4),
                                   ),
@@ -232,7 +238,7 @@ class _JournalPageState extends State<JournalPage> {
                                           color: (entry.tags.isNotEmpty)
                                               ? const Color(
                                                   0xFFF39E75,
-                                                ).withOpacity(0.1)
+                                                ).withValues(alpha: 0.1)
                                               : Colors.transparent,
                                           borderRadius: BorderRadius.circular(
                                             8,
@@ -273,7 +279,7 @@ class _JournalPageState extends State<JournalPage> {
                                           .textTheme
                                           .bodyMedium
                                           ?.color
-                                          ?.withOpacity(0.7),
+                                          ?.withValues(alpha: 0.7),
                                       height: 1.4,
                                     ),
                                   ),
@@ -336,7 +342,7 @@ class _JournalPageState extends State<JournalPage> {
           borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),
@@ -350,7 +356,7 @@ class _JournalPageState extends State<JournalPage> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.2),
+                    color: color.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(icon, color: Colors.black87, size: 24),
@@ -397,7 +403,9 @@ class _JournalPageState extends State<JournalPage> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFFF39E75).withOpacity(0.3),
+                            color: const Color(
+                              0xFFF39E75,
+                            ).withValues(alpha: 0.3),
                             blurRadius: 10,
                             offset: const Offset(0, 5),
                           ),
@@ -451,7 +459,7 @@ class _JournalPageState extends State<JournalPage> {
                 border: Border.all(color: Colors.white, width: 2),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -594,7 +602,7 @@ class _JournalPageState extends State<JournalPage> {
                 leading: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF39E75).withOpacity(0.1),
+                    color: const Color(0xFFF39E75).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(Icons.camera_alt, color: Color(0xFFF39E75)),
@@ -614,7 +622,7 @@ class _JournalPageState extends State<JournalPage> {
                 leading: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF39E75).withOpacity(0.1),
+                    color: const Color(0xFFF39E75).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(

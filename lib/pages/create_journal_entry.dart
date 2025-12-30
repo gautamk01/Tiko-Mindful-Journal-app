@@ -270,7 +270,7 @@ class _CreateJournalEntryPageState extends State<CreateJournalEntryPage> {
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: _moods.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                separatorBuilder: (context, index) => const SizedBox(width: 12),
                 itemBuilder: (context, index) {
                   final mood = _moods[index];
                   final isSelected = _selectedMood == mood['label'];

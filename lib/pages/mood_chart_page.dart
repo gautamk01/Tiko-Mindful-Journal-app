@@ -78,9 +78,14 @@ class _MoodChartPageState extends State<MoodChartPage>
               color: Colors.grey.shade600,
             ),
             onPressed: () async {
+              // Capture context before async gap
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
+
               await NotificationService().sendTestNotification();
               if (!mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(
+
+              // Use captured messenger
+              scaffoldMessenger.showSnackBar(
                 const SnackBar(
                   content: Text('Notification sent! Check notification tray'),
                   duration: Duration(seconds: 2),
@@ -145,7 +150,7 @@ class _MoodChartPageState extends State<MoodChartPage>
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -326,7 +331,7 @@ class _MoodChartPageState extends State<MoodChartPage>
                     lineTouchData: LineTouchData(
                       touchTooltipData: LineTouchTooltipData(
                         getTooltipColor: (spot) =>
-                            Colors.black.withOpacity(0.8),
+                            Colors.black.withValues(alpha: 0.8),
                         tooltipPadding: const EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 8,
@@ -358,7 +363,7 @@ class _MoodChartPageState extends State<MoodChartPage>
                                 TextSpan(
                                   text: timeStr,
                                   style: TextStyle(
-                                    color: Colors.white.withOpacity(0.8),
+                                    color: Colors.white.withValues(alpha: 0.8),
                                     fontSize: 11,
                                     fontWeight: FontWeight.normal,
                                   ),
@@ -398,8 +403,8 @@ class _MoodChartPageState extends State<MoodChartPage>
                           show: true,
                           gradient: LinearGradient(
                             colors: [
-                              const Color(0xFFF39E75).withOpacity(0.4),
-                              const Color(0xFFF39E75).withOpacity(0.0),
+                              const Color(0xFFF39E75).withValues(alpha: 0.4),
+                              const Color(0xFFF39E75).withValues(alpha: 0.0),
                             ],
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
