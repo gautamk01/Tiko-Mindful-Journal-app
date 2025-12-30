@@ -26,6 +26,11 @@ class _MoodChartPageState extends State<MoodChartPage>
     _loadMoods();
     // Initialize notifications lazily when actually used
     WidgetsBinding.instance.addObserver(this);
+
+    // Check for missing mood entries after build completes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkMissingMoods();
+    });
   }
 
   @override
@@ -46,6 +51,34 @@ class _MoodChartPageState extends State<MoodChartPage>
     setState(() {
       _moods = _db.getHourlyMoodsForDate(_selectedDate);
     });
+  }
+
+  /// Check for missing mood entries and prompt user sequentially
+  Future<void> _checkMissingMoods() async {
+    // Only check for today's missing moods
+    final now = DateTime.now();
+    if (_selectedDate.year != now.year ||
+        _selectedDate.month != now.month ||
+        _selectedDate.day != now.day) {
+      return; // Not viewing today, skip check
+    }
+
+    final missingHours = NotificationService().getMissingMoodHours();
+
+    // Show dialog for each missing hour sequentially
+    for (final hour in missingHours) {
+      final result = await showDialog(
+        context: context,
+        barrierDismissible: false, // Must choose mood or skip
+        builder: (context) => MoodSelectorDialog(hour: hour),
+      );
+
+      // If dialog was dismissed (skipped), continue to next
+      if (result == null) continue;
+
+      // Reload moods after each entry
+      _loadMoods();
+    }
   }
 
   void _changeDate(int days) {

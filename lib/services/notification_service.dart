@@ -187,6 +187,28 @@ class NotificationService {
     );
   }
 
+  /// Get list of hours (8-22) that have passed today but don't have mood entries
+  List<int> getMissingMoodHours() {
+    final now = DateTime.now();
+    final currentHour = now.hour;
+    final todaysMoods = _db.getMoodEntriesForToday();
+
+    // Get hours that already have mood entries
+    final recordedHours = todaysMoods
+        .map((mood) => mood.timestamp.hour)
+        .toSet();
+
+    // Check which hours from 8 AM to current hour (inclusive) are missing
+    final missingHours = <int>[];
+    for (int hour = 8; hour <= 22 && hour <= currentHour; hour++) {
+      if (!recordedHours.contains(hour)) {
+        missingHours.add(hour);
+      }
+    }
+
+    return missingHours;
+  }
+
   /// Cancel all scheduled notifications
   Future<void> cancelAll() async {
     await _notifications.cancelAll();

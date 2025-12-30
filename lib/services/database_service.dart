@@ -158,6 +158,11 @@ class DatabaseService {
     }).toList()..sort((a, b) => a.timestamp.compareTo(b.timestamp));
   }
 
+  /// Get all mood entries for today
+  List<HourlyMood> getMoodEntriesForToday() {
+    return getHourlyMoodsForDate(DateTime.now());
+  }
+
   List<HourlyMood> getAllHourlyMoods() {
     final box = Hive.box<HourlyMood>('hourly_moods');
     return box.values.toList();

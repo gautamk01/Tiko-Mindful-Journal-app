@@ -4,10 +4,23 @@ import 'package:tracking_app/models/hourly_mood.dart';
 import 'package:tracking_app/services/database_service.dart';
 
 class MoodSelectorDialog extends StatelessWidget {
-  const MoodSelectorDialog({super.key});
+  final int? hour; // Optional hour for backdated mood entry
+
+  const MoodSelectorDialog({super.key, this.hour});
 
   @override
   Widget build(BuildContext context) {
+    String title = 'How are you feeling?';
+    String subtitle = 'Tap to record your mood';
+
+    // If hour is provided, show specific time in title
+    if (hour != null) {
+      final period = hour! >= 12 ? 'PM' : 'AM';
+      final displayHour = hour! > 12 ? hour! - 12 : (hour! == 0 ? 12 : hour!);
+      title = 'How were you feeling at $displayHour:00 $period?';
+      subtitle = 'Fill in this missing mood entry';
+    }
+
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
@@ -20,7 +33,7 @@ class MoodSelectorDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'How are you feeling?',
+              title,
               style: GoogleFonts.playfairDisplay(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -31,7 +44,7 @@ class MoodSelectorDialog extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Tap to record your mood',
+              subtitle,
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 color: Colors.grey.shade600,
@@ -49,6 +62,21 @@ class MoodSelectorDialog extends StatelessWidget {
             _buildMoodButton(context, '😊', 'Happy', 4),
             const SizedBox(height: 16),
             _buildMoodButton(context, '😄', 'Great', 5),
+
+            // Show Skip button when backdating
+            if (hour != null) ...[
+              const SizedBox(height: 24),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'Skip',
+                  style: GoogleFonts.poppins(
+                    color: Colors.grey.shade600,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -66,10 +94,19 @@ class MoodSelectorDialog extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: () async {
+          // Create timestamp - use provided hour if backdating, otherwise use current time
+          DateTime timestamp;
+          if (hour != null) {
+            final now = DateTime.now();
+            timestamp = DateTime(now.year, now.month, now.day, hour!);
+          } else {
+            timestamp = DateTime.now();
+          }
+
           // Save mood
           final mood = HourlyMood(
-            id: DateTime.now().millisecondsSinceEpoch.toString(),
-            timestamp: DateTime.now(),
+            id: timestamp.millisecondsSinceEpoch.toString(),
+            timestamp: timestamp,
             mood: value,
           );
 

@@ -30,9 +30,13 @@ Future<void> main() async {
   // Initialize Database BEFORE app runs to avoid LateInitializationError
   await DatabaseService().init();
 
-  // Initialize notification service in background after app starts
-  Future.delayed(const Duration(milliseconds: 100), () {
-    NotificationService().initialize();
+  // Initialize notification service and schedule hourly notifications
+  Future.delayed(const Duration(milliseconds: 100), () async {
+    final notificationService = NotificationService();
+    await notificationService.initialize();
+
+    // Schedule hourly mood check notifications (8 AM - 10 PM)
+    await notificationService.scheduleHourlyMoodChecks();
   });
 
   runApp(const MyApp());
