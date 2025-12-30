@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracking_app/models/journal_entry.dart';
 import 'package:tracking_app/pages/create_journal_entry.dart';
+import 'package:tracking_app/services/database_service.dart';
 
 class ViewJournalEntryPage extends StatelessWidget {
   final JournalEntry entry;
@@ -42,6 +43,10 @@ class ViewJournalEntryPage extends StatelessWidget {
                 Navigator.pop(context, true);
               }
             },
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete_outline, color: Colors.red),
+            onPressed: () => _showDeleteConfirmation(context),
           ),
         ],
       ),
@@ -326,5 +331,48 @@ class ViewJournalEntryPage extends StatelessWidget {
     if (mood >= 6) return 'Neutral';
     if (mood >= 4) return 'Tired';
     return 'Sad';
+  }
+
+  void _showDeleteConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Entry?'),
+          content: const Text(
+            'Are you sure you want to delete this journal entry? This action cannot be undone.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Delete the entry
+                await DatabaseService().deleteJournalEntry(entry.id);
+
+                if (!context.mounted) return;
+
+                // Close dialog
+                Navigator.pop(context);
+
+                // Go back to journal page
+                Navigator.pop(context, true);
+
+                // Show success message
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Entry deleted'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              },
+              child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
