@@ -3,7 +3,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracking_app/models/hourly_mood.dart';
 import 'package:tracking_app/services/database_service.dart';
-import 'package:tracking_app/services/notification_service.dart';
 import 'package:tracking_app/widgets/mood_selector_dialog.dart';
 
 class MoodChartPage extends StatefulWidget {
@@ -63,7 +62,7 @@ class _MoodChartPageState extends State<MoodChartPage>
       return; // Not viewing today, skip check
     }
 
-    final missingHours = NotificationService().getMissingMoodHours();
+    final missingHours = _db.getMissingMoodHours();
 
     // Show dialog for each missing hour sequentially
     for (final hour in missingHours) {
@@ -105,28 +104,6 @@ class _MoodChartPageState extends State<MoodChartPage>
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.notifications_outlined,
-              color: Colors.grey.shade600,
-            ),
-            onPressed: () async {
-              // Capture context before async gap
-              final scaffoldMessenger = ScaffoldMessenger.of(context);
-
-              await NotificationService().sendTestNotification();
-              if (!mounted) return;
-
-              // Use captured messenger
-              scaffoldMessenger.showSnackBar(
-                const SnackBar(
-                  content: Text('Notification sent! Check notification tray'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            },
-            tooltip: 'Send Test Notification',
-          ),
           IconButton(
             icon: const Icon(Icons.emoji_emotions, color: Color(0xFFF39E75)),
             onPressed: () async {
@@ -232,10 +209,25 @@ class _MoodChartPageState extends State<MoodChartPage>
 
   Widget _buildMoodChart() {
     final spots = <FlSpot>[];
+    double maxHour = 8.0;
+
     for (var i = 0; i < _moods.length; i++) {
       final mood = _moods[i];
       final hour = mood.timestamp.hour + (mood.timestamp.minute / 60);
       spots.add(FlSpot(hour, mood.mood.toDouble()));
+      if (hour > maxHour) maxHour = hour;
+    }
+
+    // Dynamic max X logic
+    double maxX = maxHour;
+    if (maxX < 9) maxX = 9; // Show at least up to 9 AM
+    if (maxX > 22) maxX = 22; // Cap at 10 PM
+
+    // Dynamic width calculation (100px per hour approx)
+    double chartWidth = (maxX - 8) * 100.0;
+    // Ensure minimum width for readability
+    if (chartWidth < MediaQuery.of(context).size.width - 80) {
+      chartWidth = MediaQuery.of(context).size.width - 80;
     }
 
     return Container(
@@ -257,7 +249,7 @@ class _MoodChartPageState extends State<MoodChartPage>
           Padding(
             padding: const EdgeInsets.only(left: 16, bottom: 8),
             child: Text(
-              'Mood Level (6 AM - 10 PM)',
+              'Mood Level (8 AM - ${maxX > 12 ? (maxX - 12).toInt() : maxX.toInt()} ${maxX >= 12 ? 'PM' : 'AM'})',
               style: GoogleFonts.poppins(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
@@ -269,7 +261,7 @@ class _MoodChartPageState extends State<MoodChartPage>
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
-                width: 1400, // Reduced width for restricted time range (16h)
+                width: chartWidth + 50, // width + padding
                 padding: const EdgeInsets.only(right: 24, top: 10, bottom: 10),
                 child: LineChart(
                   LineChartData(
@@ -357,8 +349,8 @@ class _MoodChartPageState extends State<MoodChartPage>
                       ),
                     ),
                     borderData: FlBorderData(show: false),
-                    minX: 6, // Start at 6 AM
-                    maxX: 22, // End at 10 PM
+                    minX: 8, // Start at 8 AM
+                    maxX: maxX, // End at last recorded hour
                     minY: 0.5,
                     maxY: 5.5,
                     lineTouchData: LineTouchData(

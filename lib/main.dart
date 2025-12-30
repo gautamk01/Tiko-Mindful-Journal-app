@@ -7,7 +7,6 @@ import 'package:tracking_app/pages/splash_screen.dart';
 import 'package:tracking_app/widgets/custom_bottom_nav.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tracking_app/services/database_service.dart';
-import 'package:tracking_app/services/notification_service.dart';
 
 // Global navigator key for showing dialogs from anywhere
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -29,15 +28,6 @@ Future<void> main() async {
 
   // Initialize Database BEFORE app runs to avoid LateInitializationError
   await DatabaseService().init();
-
-  // Initialize notification service and schedule hourly notifications
-  Future.delayed(const Duration(milliseconds: 100), () async {
-    final notificationService = NotificationService();
-    await notificationService.initialize();
-
-    // Schedule hourly mood check notifications (8 AM - 10 PM)
-    await notificationService.scheduleHourlyMoodChecks();
-  });
 
   runApp(const MyApp());
 }

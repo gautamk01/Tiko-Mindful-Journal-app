@@ -251,6 +251,85 @@ class _SettingsPageState extends State<SettingsPage> {
 
               const SizedBox(height: 24),
 
+              // Notifications section
+              _buildSection(
+                title: 'Notifications',
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.orange.shade50,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.orange.shade200),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.notifications_active,
+                              color: Colors.orange.shade700,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                'Hourly Mood Reminders',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.orange.shade900,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Get notified every hour from 8 AM to 10 PM to track your mood throughout the day.',
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: Colors.orange.shade800,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.shade100,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.check_circle_outline,
+                                color: Colors.orange.shade900,
+                                size: 18,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  'Notifications are enabled and ready to remind you',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    color: Colors.orange.shade900,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
               // Creator section
               _buildSection(
                 title: 'Creator',
@@ -498,6 +577,28 @@ class _SettingsPageState extends State<SettingsPage> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Could not open link: $e')));
+    }
+  }
+
+  Future<void> _openAppSettings() async {
+    try {
+      // Use Android intent format to open app details settings
+      const settingsUrl =
+          'android.settings.APPLICATION_DETAILS_SETTINGS://com.example.tracking_app';
+      await launchUrl(
+        Uri.parse(settingsUrl),
+        mode: LaunchMode.externalApplication,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Please manually enable "Alarms & reminders" in Settings > Apps > Tiko',
+          ),
+          duration: Duration(seconds: 4),
+        ),
+      );
     }
   }
 }
